@@ -1,0 +1,36 @@
+
+
+Item
+name
+description
+thumbnail
+category_id
+price
+stock
+
+Category
+name
+description
+thumbnail
+
+User
+username
+email
+password
+address
+phoneNumber
+role ("user" | "admin")
+
+Order
+user_id
+totalAmount
+status ("pending", "paid", "failed", "shipped")
+paymentMethod
+shippingAddress
+phoneNumber
+
+OrderItem
+order_id
+item_id
+quantity
+price
