@@ -12,6 +12,9 @@ function NavBar(){
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
+    const cart = useSelector(state => state.cartReducer.cart);
+    console.log(cart , "cart");
+
     const isLoggedIn = !!localStorage.getItem("access_token");
 
     const token = localStorage.getItem("access_token");
@@ -55,8 +58,8 @@ function NavBar(){
                             Services
                         </NavLink>
                         
-                        <NavLink to="/products" className="nav-link">
-                            About
+                        <NavLink to="/orders" className="nav-link">
+                            My Orders
                         </NavLink>
                     </>
                 )}
@@ -85,9 +88,9 @@ function NavBar(){
                 {isLoggedIn && (
                     <>
                         <div className="d-flex gap-2">
-                        <a className="btn btn-success" href="#" role="button">
-                            Cart
-                        </a>
+                        <Link to="/cart" className="btn btn-success">
+                        Cart ({cart.length})
+                        </Link>
 
                         <Button
                             className="btn btn-primary"

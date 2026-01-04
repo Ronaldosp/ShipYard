@@ -3,6 +3,10 @@ import HomePage from '../views/HomePage'
 import LoginPage from '../views/LoginPage'
 import RegisterPage from '../views/RegisterPage'
 import Layout from '../components/Layout'
+import CategoryPage from '../views/CategoryPage'
+import ItemPage from '../views/ItemPage'
+import CartPage from '../views/CartPage'
+import OrderPage from '../views/OrderPage'
 
 export default createBrowserRouter([
     {
@@ -22,6 +26,22 @@ export default createBrowserRouter([
             {
                 path:"/register",
                 element  :<RegisterPage/>
+            },
+            {
+                path:"/categories",
+                element  :<CategoryPage/>
+            },
+            {
+                path:"/items",
+                element  :<ItemPage/>
+            },
+            {
+                path:"/cart",
+                element  :<CartPage/>
+            },
+            {
+                path:"/orders",
+                element  :<OrderPage/>
             },
             
         ]

@@ -1,5 +1,5 @@
 .products-component-container{
-    width: 100%;
+        width: 100%;
         margin-top: -10px;
     .products-component-filter-container{
         padding-top: 10px;
@@ -22,5 +22,145 @@
 
     .products-component-listing-container{
         background-color: white;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 24px;
+        padding: 80px 40px;
+
+        .product-component-listing--card{
+            background-color: #ffffff;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            display: flex;
+            flex-direction: column;
+            
+
+            .product-card-component-listing--image img {
+                width: 100%;
+                height: 180px;
+                object-fit: cover;
+                display: block;
+            }
+
+            .product-card-component-listing--body {
+                padding: 16px;
+                flex-grow: 1;
+                display: flex;
+                flex-direction: column;
+
+                h3 {
+                    font-size: 18px;
+                    margin-bottom: 8px;
+                }
+            }
+
+            .product-card-component-listing-price {
+                font-weight: 600;
+                color: #0d6efd;
+                margin-bottom: 6px;
+            }
+
+            .product-card-component-listing-desc {
+                font-size: 14px;
+                color: #555;
+                line-height: 1.4;
+                flex-grow: 1;
+            }
+
+        }
+
+        .product-component-listing--card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.18);
+        }
+        
+    }
+    .products-component-modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.65);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        .products-component-modal {
+            background: #ffffff;
+            width: 85vw;
+            height: 75vh;
+            display: flex;
+            position: relative;
+
+            .products-component-modal-image {
+                width: 40%;
+                padding: 32px;
+                background: #f5f5f5;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                img {
+                    max-width: 100%;
+                    max-height: 100%;
+                    object-fit: contain;
+                }
+            }
+
+            .products-component-modal-content {
+                width: 60%;
+                padding: 80px 32px 32px 32px;
+                display: flex;
+                flex-direction: column;
+
+                h2 {
+                    margin-bottom: 12px;
+                    font-size: 22px;
+                }
+
+                .products-componen-modalt-price {
+                    font-size: 20px;
+                    font-weight: 600;
+                    color: #0d6efd;
+                    margin-bottom: 16px;
+                }
+
+                .products-component-modal-description {
+                    
+                    font-size: 15px;
+                    color: #444;
+                    line-height: 1.6;
+                }
+                .products-component-modal-actions {
+                    display: flex;
+                    .products-component-modal-add-cart {
+                        padding: 12px 24px;
+                        background: #0d6efd;
+                        color: white;
+                        border: none;
+                        cursor: pointer;
+                        font-weight: 600;
+                    }
+
+                    .products-component-modal-add-cart:hover {
+                        background: #0b5ed7;
+                    }
+                }
+            }
+
+            .products-component-modal-close {
+                position: absolute;
+                top: 16px;
+                right: 16px;
+                background: transparent;
+                border: none;
+                font-size: 28px;
+                cursor: pointer;
+                color: #333;
+            }
+
+            .products-component-modal-close:hover {
+                background: #0b5ed7;
+            }
+        }
     }
 }

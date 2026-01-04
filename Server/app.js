@@ -1,10 +1,16 @@
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
+
 const express = require('express')
 const app = express()
 const port = 3000
 const cors = require("cors");
 const { comparePasswrod } = require('./helpers/bcrypt');
+const midtransClient = require("midtrans-client");
 const {  User , Item , Order , OrderItem , Category } = require('./models');
 const { signToken } = require('./helpers/jwt');
+const { authentication } = require("./middlewares/authentication");
 
 app.use(cors());
 app.use(express.urlencoded({extended:true}));
@@ -283,11 +289,42 @@ app.get('/orders/:id', async (req, res) => {
     if (!order) {
       return res.status(404).json({ message: 'Order Not Found' });
     }
-
+    console.log(order,"order");
+    
     res.status(200).json(order);
   } catch (error) {
     res.status(500).json({ message: "Internal Server Error" });
   }
+});
+
+app.get("/orders", authentication, async (req, res) => {
+  const orders = await Order.findAll({
+    where: { user_id: req.user.id },
+    include: [
+      {
+        model: Item,
+        through: { attributes: ["quantity"] } // include quantity from OrderItem
+      }
+    ],
+    order: [["createdAt", "DESC"]]
+  });
+
+  res.json(orders);
+});
+
+app.patch("/orders/:id/cancel", authentication, async (req, res) => {
+  const order = await Order.findByPk(req.params.id);
+
+  if (!order) {
+    return res.status(404).json({ message: "Order not found" });
+  }
+
+  if (order.status !== "PENDING") {
+    return res.status(400).json({ message: "Only pending orders can be cancelled" });
+  }
+
+  await order.update({ status: "CANCELLED" });
+  res.json({ message: "Order updated to CANCELLED" });
 });
 
 app.post('/orders', async(req,res)=>{
@@ -335,6 +372,128 @@ app.delete('/orders/:id' , async(req,res)=>{
   } catch (error) {
     console.log(error);
   }
+});
+
+//midtrans
+app.use(authentication);
+app.post("/midtransToken", async (req, res) => {
+  try {
+    const user = await User.findByPk(req.user.id);
+    const items = req.body.items;
+
+    let totalPrice = 0;
+
+    if (!items || items.length === 0) {
+      throw new Error("Items cannot be empty");
+    }
+
+
+    for (const i of items) {
+      const item = await Item.findByPk(i.item_id);
+      if (!item) throw new Error("Item not found");
+      totalPrice += item.price * i.quantity;
+    }
+    console.log(totalPrice,"totalPrice");
+    
+    if (totalPrice <= 0) {
+      throw new Error("Invalid total price");
+    }
+
+    const order = await Order.create({
+      user_id: user.id,
+      status: "PENDING",
+      totalAmount: totalPrice,
+    });
+
+    for (const i of items) {
+      const item = await Item.findByPk(i.item_id);
+
+      await OrderItem.create({
+        order_id: order.id,
+        item_id: item.id,
+        quantity: i.quantity,
+        price: item.price,
+      });
+    }
+
+    const orderId = `ORDER-${order.id}`;
+
+    const snap = new midtransClient.Snap({
+      isProduction: false,
+      serverKey: process.env.MIDTRANS_SERVER_KEY,
+    });
+
+    const parameter = {
+      transaction_details: {
+        order_id: `ORDER-${order.id}`,
+        gross_amount: totalPrice
+      },
+      customer_details: {
+        email: user.email,
+      },
+    };
+
+    const midtrans = await snap.createTransaction(parameter);
+
+    res.status(201).json({
+      token: midtrans.token,
+      orderId,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+
+app.post("/midtrans/webhook", async (req, res) => {
+  try {
+    const { order_id, transaction_status } = req.body;
+
+    const orderId = order_id.replace("ORDER-", "");
+    const order = await Order.findByPk(orderId);
+
+    if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+    }
+
+    if (
+      transaction_status === "settlement" ||
+      transaction_status === "capture"
+    ) {
+      await order.update({ status: "PAID" });
+    } else if (transaction_status === "pending") {
+      await order.update({ status: "PENDING" });
+    } else if (
+      transaction_status === "cancel" ||
+      transaction_status === "expire"
+    ) {
+      await order.update({ status: "CANCELLED" });
+    }
+
+    res.sendStatus(200);
+  } catch (error) {
+    console.error("WEBHOOK ERROR:", error);
+    res.sendStatus(500);
+  }
+});
+
+app.patch("/orders/:id/paid", authentication, async (req, res) => {
+  let orderId = req.params.id;
+
+  // If format is ORDER-13 → extract 13
+  if (orderId.includes("-")) {
+    orderId = orderId.split("-")[1];
+  }
+
+  const order = await Order.findByPk(orderId);
+
+  if (!order) {
+    return res.status(404).json({ message: "Order not found" });
+  }
+
+  await order.update({ status: "PAID" });
+
+  res.json({ message: "Order updated to PAID" });
 });
 
 

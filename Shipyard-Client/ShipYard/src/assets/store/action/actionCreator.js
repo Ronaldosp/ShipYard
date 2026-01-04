@@ -351,3 +351,28 @@ export const deleteOrder = (id) =>{
         }
     }
 }
+
+//cart
+export const addToCart = (product) => ({
+  type: "cart/add",
+  payload: product
+});
+
+export const increaseQty = (id) => ({
+  type: "cart/increase",
+  payload: id
+});
+
+export const decreaseQty = (id) => ({
+  type: "cart/decrease",
+  payload: id
+});
+
+export const removeFromCart = (id) => ({
+  type: "cart/remove",
+  payload: id
+});
+
+export const clearCart = () => ({
+  type: "cart/clear"
+});
