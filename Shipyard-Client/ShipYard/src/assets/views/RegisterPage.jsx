@@ -7,7 +7,10 @@ function RegisterPage(){
     const [username , setUsername] = useState("")
     const [email, setEmail] = useState("")
     const [password , setPassword] = useState("")
-    const [role, setRole] = useState("")
+    const [role, setRole] = useState("Customer")
+    const [address , setAddress] = useState("")
+    const [phoneNumber , setPhoneNumber] = useState("")
+
     const navigate = useNavigate()
     const dispatch = useDispatch()
     return <>
@@ -33,10 +36,10 @@ function RegisterPage(){
          <form onSubmit={(event)=>{
           event.preventDefault()
           const registerData={
-            email , password , username , role
+            email , password , username , role , address , phoneNumber
           };
           dispatch(register(registerData))
-          navigate('/')
+          navigate('/login')
 
         }}>
           <div className="mb-3">
@@ -72,6 +75,30 @@ function RegisterPage(){
             onChange={(event)=>{
               const value = event.target.value
               setPassword(value)
+            }}
+             />
+          </div>
+          <div className="mb-3">
+            <label className="form-label">Address</label>
+            <input 
+            className="form-control" 
+            type="text"
+            value={address}
+            onChange={(event)=>{
+              const value = event.target.value
+              setAddress(value)
+            }}
+             />
+          </div>
+          <div className="mb-3">
+            <label className="form-label">Phone Number</label>
+            <input 
+            className="form-control" 
+            type="text"
+            value={phoneNumber}
+            onChange={(event)=>{
+              const value = event.target.value
+              setPhoneNumber(value)
             }}
              />
           </div>

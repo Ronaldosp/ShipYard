@@ -59,14 +59,18 @@ function CartPage() {
 
                 alert("Payment successful!");
                 //navigate("/orders");
+                dispatch(clearCart());
+                navigate("/orders");
             },
 
             onPending: function (result) {
                 alert("Payment pending");
+                navigate("/orders");
             },
 
             onError: function (result) {
                 alert("Payment failed");
+                navigate("/orders");
             }
         });
 
