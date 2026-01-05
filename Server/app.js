@@ -312,6 +312,20 @@ app.get("/orders", authentication, async (req, res) => {
   res.json(orders);
 });
 
+app.get("/ordersadmin", authentication, async (req, res) => {
+  const orders = await Order.findAll({
+    include: [
+      {
+        model: Item,
+        through: { attributes: ["quantity"] } // include quantity from OrderItem
+      }
+    ],
+    order: [["createdAt", "DESC"]]
+  });
+
+  res.json(orders);
+});
+
 app.patch("/orders/:id/cancel", authentication, async (req, res) => {
   const order = await Order.findByPk(req.params.id);
 

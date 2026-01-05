@@ -12,7 +12,7 @@ function RegisterPage(){
     const dispatch = useDispatch()
     return <>
         <div style={{
-        backgroundImage: 'url("https://i.etsystatic.com/23444619/r/il/c95fc2/3826885344/il_fullxfull.3826885344_p6rt.jpg")',
+        backgroundImage: 'url("https://images2.alphacoders.com/131/thumb-1920-1313270.jpg")',
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
         minHeight: "100vh",

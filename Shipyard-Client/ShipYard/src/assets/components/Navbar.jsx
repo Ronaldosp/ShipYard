@@ -31,6 +31,13 @@ function NavBar(){
     }
     }
 
+    const scrollToSection = (id) => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.scrollIntoView({ behavior: "smooth" });
+        }
+    };
+
     const handleLogout = () => {
         localStorage.clear();
         navigate("/login");
@@ -39,22 +46,27 @@ function NavBar(){
     return <div>
         <Navbar expand="lg" className="custom-navbar  position-relative">
         <Container>
-            <Navbar.Brand>My Shipyard</Navbar.Brand>
+            <Navbar.Brand as={Link} to="/">
+                <img
+                    src="/favicon.png"
+                    alt="Marine Tech Logo"
+                    height="32"
+                    className="d-inline-block align-top"
+                />
+                <span>Marine Tech</span></Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="position-absolute start-50 translate-middle-x">
                 {role === "Customer" && (
                     <>
                         <NavLink to='/' className="nav-link">Home</NavLink>
-                        <NavLink to='/products' className="nav-link" >Products</NavLink>
-                        <NavLink to="/products" className="nav-link">
-                            Careers
+                        <NavLink onClick={() => scrollToSection("about")} className="nav-link">
+                            About
                         </NavLink>
-                        <NavLink to="/products" className="nav-link">
-                            History
+                        <NavLink onClick={() => scrollToSection("location")} className="nav-link">
+                            Location
                         </NavLink>
-
-                        <NavLink to="/products" className="nav-link">
+                        <NavLink onClick={() => scrollToSection("services")} className="nav-link">
                             Services
                         </NavLink>
                         
@@ -71,7 +83,7 @@ function NavBar(){
                         <NavLink to="/items" className="nav-link">
                             Add Items
                         </NavLink>
-                        <NavLink to="/orders" className="nav-link">
+                        <NavLink to="/ordersAdmin" className="nav-link">
                             Orders Status
                         </NavLink>
                     </>

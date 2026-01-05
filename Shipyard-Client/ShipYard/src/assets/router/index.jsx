@@ -7,6 +7,7 @@ import CategoryPage from '../views/CategoryPage'
 import ItemPage from '../views/ItemPage'
 import CartPage from '../views/CartPage'
 import OrderPage from '../views/OrderPage'
+import OrderAdmin from '../views/OrderAdmin'
 
 export default createBrowserRouter([
     {
@@ -43,6 +44,10 @@ export default createBrowserRouter([
                 path:"/orders",
                 element  :<OrderPage/>
             },
+            {
+                path:"/ordersAdmin",
+                element  :<OrderAdmin/>
+            }
             
         ]
     },

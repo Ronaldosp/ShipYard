@@ -21,13 +21,12 @@ function LoginPage() {
       navigate('/')
     })
     
-    
   }
 
   return (
     <>
     <div className="LoginPage-Component" style={{
-        backgroundImage: 'url("https://static.vecteezy.com/system/resources/previews/020/115/455/large_2x/food-background-breakfast-with-yogurt-granola-or-muesli-strawberries-banner-image-for-website-photo.jpg")',
+        backgroundImage: 'url("https://images8.alphacoders.com/631/thumb-1920-631372.jpg")',
         backgroundSize: "cover",
         backgroundRepeat: "no-repeat",
         minHeight: "100vh",
@@ -77,10 +76,23 @@ function LoginPage() {
             }}
           />
         </div>
-        <div className="button-group">
-            <Button type="submit" variant="outline-success">
+        <div className="button-group d-flex justify-content-center pt-4 pb-2">
+          <Button className="w-50" type="submit" variant="success">
             Login
-            </Button>
+          </Button>
+        </div>
+
+        <div className="text-center mt-2">
+          <span className="text-muted">Don’t have an account? </span>
+          <NavLink to="/register" className="text-primary fw-semibold">
+            Register
+          </NavLink>
+        </div>
+
+        <div className="text-center mt-2">
+          <NavLink to="/" className="text-muted text-decoration-none">
+            ← Back to Home
+          </NavLink>
         </div>
       </form>
       </div>

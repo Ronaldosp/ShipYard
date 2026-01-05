@@ -19,7 +19,7 @@ export default function Footer(){
                 </div>
             </div>
             <div className="footer-text">
-                <p>© 2035 by Ronaldo Surya Putra. Powered and secured by ron</p>
+                <p>@ 220210081 Ronaldo Surya Putra. 220210010 Gabriel Oscario Konstantin . Powered and secured by SHELLFISH</p>
             </div>
         </div>
     )

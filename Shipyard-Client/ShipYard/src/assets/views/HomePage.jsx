@@ -1,19 +1,19 @@
-import { NavLink, Outlet } from "react-router-dom";
-import Table from "react-bootstrap/Table";
-import Button from "react-bootstrap/Button";
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+import { useRef } from "react";
 import Welcome from "../components/Welcome.jsx";
-//import Collaborator from "../components/Collaborators.jsx";
 import AboutUs from "../components/AboutUs.jsx";
 import Footer from "../components/Footer.jsx";
 import Products from "../components/Products.jsx";
-//import CategoryCards from "../components/CategoryCard.jsx";
+import Services from "../components/Services.jsx";
+import Location from "../components/Location.jsx";
 
 
 function HomePage(){
-
+    const welcomeRef = useRef(null);
+    const productsRef = useRef(null);
+    const aboutRef = useRef(null);
+    const footerRef = useRef(null);
+    const serviceRef = useRef(null);
+    const locationRef = useRef(null);
     return (
         <div style={{
           backgroundImage: 'url("")',
@@ -23,12 +23,31 @@ function HomePage(){
           minHeight: "100vh",
           display: "flex",
           flexDirection: "column",
-          alignItems: "center"
         }}>
-        <Welcome/>
-        <Products/>
-        <AboutUs/>
-        <Footer/>
+          <section ref={welcomeRef} id="welcome">
+            <Welcome />
+          </section>
+
+          <section ref={productsRef} id="products">
+            <Products />
+          </section>
+
+          <section ref={aboutRef} id="about">
+            <AboutUs />
+          </section>
+
+          <section ref={locationRef} id="location">
+            <Location />
+          </section>
+
+          <section ref={serviceRef} id="services">
+            <Services />
+          </section>
+
+          <section ref={footerRef} id="footer">
+            <Footer />
+          </section>
+          
         </div>
       );
 }
